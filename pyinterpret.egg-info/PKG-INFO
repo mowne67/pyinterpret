@@ -35,6 +35,7 @@ Requires-Dist: flask>=2.2.5
 Requires-Dist: seaborn>=0.12.2
 Requires-Dist: setuptools>=68.0.0
 Requires-Dist: build>=1.1.1
+Requires-Dist: twine>=4.0.2
 Provides-Extra: shap
 Requires-Dist: shap>=0.39.0; extra == "shap"
 Provides-Extra: lime

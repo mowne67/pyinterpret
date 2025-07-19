@@ -1,13 +1,18 @@
 .replit
 LICENSE
 MANIFEST.in
+PUBLISHING_GUIDE.md
 README.md
+app.py
 debug_lime.py
 debug_shap.py
 my_quick_example.py
+publish_package.py
 pyproject.toml
 replit.md
 setup.py
+test_package.py
+uv.lock
 docs/api.rst
 docs/conf.py
 docs/index.rst
@@ -29,6 +34,7 @@ pyinterpret/local/shap_explainer.py
 pyinterpret/utils/__init__.py
 pyinterpret/utils/validation.py
 pyinterpret/utils/visualization.py
+templates/index.html
 tests/__init__.py
 tests/test_core.py
 tests/test_global.py
