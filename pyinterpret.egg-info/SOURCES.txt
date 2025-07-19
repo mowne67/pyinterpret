@@ -3,6 +3,7 @@ LICENSE
 MANIFEST.in
 PUBLISHING_GUIDE.md
 README.md
+READY_TO_PUBLISH.md
 app.py
 debug_lime.py
 debug_shap.py
