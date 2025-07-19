@@ -1,6 +1,10 @@
+.replit
 MANIFEST.in
 README.md
+debug_lime.py
+debug_shap.py
 pyproject.toml
+replit.md
 setup.py
 docs/api.rst
 docs/conf.py
