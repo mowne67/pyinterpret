@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: pyinterpret
+Version: 0.1.0
+Summary: A unified Python library for machine learning model interpretation
+Home-page: https://github.com/pyinterpret/pyinterpret
+Author: PyInterpret Team
+Author-email: PyInterpret Team <team@pyinterpret.org>
+License: MIT
+Project-URL: Homepage, https://github.com/pyinterpret/pyinterpret
+Project-URL: Documentation, https://pyinterpret.readthedocs.io/
+Project-URL: Repository, https://github.com/pyinterpret/pyinterpret
+Project-URL: Issues, https://github.com/pyinterpret/pyinterpret/issues
+Keywords: machine learning,interpretability,explainability,shap,lime,feature importance,model explanation,xai,artificial intelligence
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: pandas>=1.1.0
+Requires-Dist: scikit-learn>=0.24.0
+Requires-Dist: matplotlib>=3.3.0
+Provides-Extra: shap
+Requires-Dist: shap>=0.39.0; extra == "shap"
+Provides-Extra: lime
+Requires-Dist: lime>=0.2.0; extra == "lime"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=0.5.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=1.11.0; extra == "docs"
+Provides-Extra: testing
+Requires-Dist: pytest>=6.0.0; extra == "testing"
+Requires-Dist: pytest-cov>=2.10.0; extra == "testing"
+Requires-Dist: pytest-mock>=3.3.0; extra == "testing"
+Provides-Extra: dev
+Requires-Dist: black>=21.0.0; extra == "dev"
+Requires-Dist: flake8>=3.8.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: pre-commit>=2.10.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: shap>=0.39.0; extra == "all"
+Requires-Dist: lime>=0.2.0; extra == "all"
+Requires-Dist: plotly>=5.0.0; extra == "all"
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# PyInterpret: A Unified Python Library for Machine Learning Model Interpretation
+
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://readthedocs.org/projects/pyinterpret/badge/?version=latest)](https://pyinterpret.readthedocs.io/en/latest/?badge=latest)
+
+PyInterpret is a comprehensive Python library that unifies fragmented explainability tools under one consistent API. It provides modular coverage of both global and local explanations across different data modalities, consolidating capabilities from state-of-the-art tools like SHAP, LIME, and others.
+
+## 🎯 Key Features
+
+- **Unified API**: Consistent interface across all interpretation methods
+- **Local Attribution**: SHAP, LIME, and other instance-level explanations
+- **Global Insights**: Permutation importance, partial dependence plots
+- **Modular Architecture**: Easy extension and customization
+- **Multiple Data Types**: Support for tabular, text, image, and time-series data
+- **Framework Integration**: Works seamlessly with scikit-learn, pandas, and other ML libraries
+- **Professional Quality**: Comprehensive testing, documentation, and error handling
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+pip install pyinterpret
+
+# Or with optional dependencies
+pip install pyinterpret[all]  # Includes SHAP, LIME, and all features

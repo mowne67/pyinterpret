@@ -1,0 +1,55 @@
+# Include the README
+include README.md
+
+# Include the license file
+include LICENSE
+
+# Include the changelog
+include CHANGELOG.md
+
+# Include the requirements files
+include requirements.txt
+include requirements-dev.txt
+
+# Include documentation
+recursive-include docs *.rst *.py *.bat Makefile
+include docs/requirements.txt
+
+# Include tests
+recursive-include tests *.py
+
+# Include examples
+recursive-include examples *.py *.ipynb *.md
+
+# Include configuration files
+include setup.cfg
+include pyproject.toml
+include tox.ini
+include .coveragerc
+
+# Include CI configuration
+include .github/workflows/*.yml
+include .pre-commit-config.yaml
+
+# Exclude build artifacts
+prune build
+prune dist
+prune *.egg-info
+
+# Exclude cache files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude .coverage
+global-exclude .pytest_cache
+global-exclude .tox
+
+# Exclude development files
+exclude .gitignore
+exclude .flake8
+exclude .isort.cfg
+exclude mypy.ini
+
+# Include package data
+recursive-include pyinterpret *.py

@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyinterpret"
+version = "0.1.0"
+description = "A unified Python library for machine learning model interpretation"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "PyInterpret Team", email = "team@pyinterpret.org"}
+]
+keywords = [
+    "machine learning",
+    "interpretability", 
+    "explainability",
+    "shap",
+    "lime",
+    "feature importance",
+    "model explanation",
+    "xai",
+    "artificial intelligence"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.19.0",
+    "pandas>=1.1.0",
+    "scikit-learn>=0.24.0",
+    "matplotlib>=3.3.0",
+]
+
+[project.optional-dependencies]
+shap = ["shap>=0.39.0"]
+lime = ["lime>=0.2.0"]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=0.5.0",
+    "sphinx-autodoc-typehints>=1.11.0",
+]
+testing = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "pytest-mock>=3.3.0",
+]
+dev = [
+    "black>=21.0.0",
+    "flake8>=3.8.0",
+    "isort>=5.0.0",
+    "pre-commit>=2.10.0",
+]
+all = [
+    "shap>=0.39.0",
+    "lime>=0.2.0",
+    "plotly>=5.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pyinterpret/pyinterpret"
+Documentation = "https://pyinterpret.readthedocs.io/"
+Repository = "https://github.com/pyinterpret/pyinterpret"
+Issues = "https://github.com/pyinterpret/pyinterpret/issues"
+
+[tool.setuptools.packages.find]
+include = ["pyinterpret*"]
+
+[tool.setuptools.package-data]
+pyinterpret = ["py.typed"]
