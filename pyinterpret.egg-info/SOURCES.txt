@@ -3,6 +3,7 @@ MANIFEST.in
 README.md
 debug_lime.py
 debug_shap.py
+my_quick_example.py
 pyproject.toml
 replit.md
 setup.py
