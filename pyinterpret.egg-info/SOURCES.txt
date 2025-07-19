@@ -1,4 +1,5 @@
 .replit
+LICENSE
 MANIFEST.in
 README.md
 debug_lime.py

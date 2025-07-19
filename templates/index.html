@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyInterpret - ML Model Interpretation Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #4facfe;
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        select, input, button {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .result-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .result-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .result-details h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #4facfe;
+            border-bottom-color: #4facfe;
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 PyInterpret</h1>
+            <p>Interactive Machine Learning Model Interpretation</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Model Training Section -->
+            <div class="section">
+                <h3>🤖 Step 1: Train a Model</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="taskType">Task Type:</label>
+                        <select id="taskType">
+                            <option value="classification">Classification</option>
+                            <option value="regression">Regression</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="modelType">Model Type:</label>
+                        <select id="modelType">
+                            <option value="random_forest">Random Forest</option>
+                            <option value="linear">Linear Model</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>&nbsp;</label>
+                        <button onclick="trainModel()">Train Model</button>
+                    </div>
+                </div>
+                <div id="modelStatus" class="status" style="display: none;"></div>
+            </div>
+
+            <!-- Explanation Tabs -->
+            <div class="section" id="explanationSection" style="display: none;">
+                <h3>📊 Step 2: Explain the Model</h3>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('local')">Local Explanations</button>
+                    <button class="tab" onclick="switchTab('global')">Global Explanations</button>
+                </div>
+
+                <!-- Local Explanations Tab -->
+                <div id="localTab" class="tab-content active">
+                    <p style="margin-bottom: 20px; color: #666;">
+                        Local explanations show why the model made a specific prediction for one instance.
+                    </p>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="localExplainer">Explainer Method:</label>
+                            <select id="localExplainer">
+                                <option value="shap">SHAP (SHapley Additive exPlanations)</option>
+                                <option value="lime">LIME (Local Interpretable Model-agnostic Explanations)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="instanceIdx">Instance Index (0-299):</label>
+                            <input type="number" id="instanceIdx" value="0" min="0" max="299">
+                        </div>
+                        <div class="control-group">
+                            <label>&nbsp;</label>
+                            <button onclick="explainLocal()">Explain Instance</button>
+                        </div>
+                    </div>
+                    <div id="localStatus" class="status" style="display: none;"></div>
+                    <div id="localResults"></div>
+                </div>
+
+                <!-- Global Explanations Tab -->
+                <div id="globalTab" class="tab-content">
+                    <p style="margin-bottom: 20px; color: #666;">
+                        Global explanations show which features are most important for the model overall.
+                    </p>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="globalExplainer">Explainer Method:</label>
+                            <select id="globalExplainer">
+                                <option value="permutation">Permutation Importance</option>
+                                <option value="partial_dependence">Partial Dependence Plot</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>&nbsp;</label>
+                            <button onclick="explainGlobal()">Generate Explanation</button>
+                        </div>
+                    </div>
+                    <div id="globalStatus" class="status" style="display: none;"></div>
+                    <div id="globalResults"></div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="section">
+                <h3>ℹ️ About PyInterpret</h3>
+                <p style="line-height: 1.6; color: #555;">
+                    PyInterpret is a unified Python library for machine learning model interpretation. 
+                    It provides a consistent API for popular explainability methods like SHAP, LIME, 
+                    permutation importance, and partial dependence plots. This demo shows how you can 
+                    use these methods to understand both individual predictions (local explanations) 
+                    and overall model behavior (global explanations).
+                </p>
+                <br>
+                <p style="line-height: 1.6; color: #555;">
+                    <strong>Local Explanations:</strong> Show why the model made a specific prediction<br>
+                    <strong>Global Explanations:</strong> Show which features are most important overall<br>
+                    <strong>SHAP:</strong> Game theory-based feature attributions<br>
+                    <strong>LIME:</strong> Local linear approximations of model behavior
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentModel = null;
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function hideStatus(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        async function trainModel() {
+            const taskType = document.getElementById('taskType').value;
+            const modelType = document.getElementById('modelType').value;
+            
+            showStatus('modelStatus', 'Training model...', 'loading');
+            
+            try {
+                const response = await fetch('/api/train_model', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        task_type: taskType,
+                        model_type: modelType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentModel = result;
+                    showStatus('modelStatus', 
+                        `✅ Model trained successfully! ${result.performance} | ${result.data_shape}`, 
+                        'success');
+                    document.getElementById('explanationSection').style.display = 'block';
+                } else {
+                    showStatus('modelStatus', `❌ Error: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('modelStatus', `❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function explainLocal() {
+            if (!currentModel) {
+                showStatus('localStatus', '❌ Please train a model first', 'error');
+                return;
+            }
+
+            const explainerType = document.getElementById('localExplainer').value;
+            const instanceIdx = parseInt(document.getElementById('instanceIdx').value);
+            
+            showStatus('localStatus', 'Generating local explanation...', 'loading');
+            
+            try {
+                const response = await fetch('/api/explain_local', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        explainer_type: explainerType,
+                        instance_idx: instanceIdx
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('localStatus', 
+                        `✅ ${result.explainer_type.toUpperCase()} explanation generated!`, 
+                        'success');
+                    
+                    const resultsDiv = document.getElementById('localResults');
+                    resultsDiv.innerHTML = `
+                        <img src="data:image/png;base64,${result.plot}" class="result-image" alt="Local Explanation Plot">
+                        <div class="result-details">
+                            <h4>Prediction Details:</h4>
+                            <p><strong>Predicted Value:</strong> ${result.prediction.toFixed(3)}</p>
+                            ${result.baseline ? `<p><strong>Baseline:</strong> ${result.baseline.toFixed(3)}</p>` : ''}
+                            <p><strong>Instance Index:</strong> ${instanceIdx}</p>
+                            <br>
+                            <h4>Top Contributing Features:</h4>
+                            <div class="feature-list">
+                                ${result.top_features.map((feature, i) => `
+                                    <div class="feature-item">
+                                        <strong>${feature}:</strong> ${result.top_attributions[i].toFixed(3)}<br>
+                                        <small>Value: ${result.top_values[i].toFixed(3)}</small>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    showStatus('localStatus', `❌ Error: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('localStatus', `❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function explainGlobal() {
+            if (!currentModel) {
+                showStatus('globalStatus', '❌ Please train a model first', 'error');
+                return;
+            }
+
+            const explainerType = document.getElementById('globalExplainer').value;
+            
+            showStatus('globalStatus', 'Generating global explanation...', 'loading');
+            
+            try {
+                const response = await fetch('/api/explain_global', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        explainer_type: explainerType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('globalStatus', 
+                        `✅ ${result.explainer_type.replace('_', ' ').toUpperCase()} explanation generated!`, 
+                        'success');
+                    
+                    const resultsDiv = document.getElementById('globalResults');
+                    
+                    if (result.explainer_type === 'permutation') {
+                        resultsDiv.innerHTML = `
+                            <img src="data:image/png;base64,${result.plot}" class="result-image" alt="Global Explanation Plot">
+                            <div class="result-details">
+                                <h4>Permutation Importance Results:</h4>
+                                <p><strong>Baseline Score:</strong> ${result.baseline_score.toFixed(3)}</p>
+                                <br>
+                                <h4>Feature Importance Rankings:</h4>
+                                <div class="feature-list">
+                                    ${result.feature_names.map((feature, i) => `
+                                        <div class="feature-item">
+                                            <strong>${feature}:</strong> ${result.importances[i].toFixed(3)} ± ${result.std_errors[i].toFixed(3)}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        resultsDiv.innerHTML = `
+                            <img src="data:image/png;base64,${result.plot}" class="result-image" alt="Partial Dependence Plot">
+                            <div class="result-details">
+                                <h4>Partial Dependence Analysis:</h4>
+                                <p><strong>Feature:</strong> ${result.feature_name}</p>
+                                <p>This plot shows how predictions change as the feature value changes, while keeping other features at their average values.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    showStatus('globalStatus', `❌ Error: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('globalStatus', `❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Update model type options based on task type
+        document.getElementById('taskType').addEventListener('change', function() {
+            const taskType = this.value;
+            const modelSelect = document.getElementById('modelType');
+            
+            if (taskType === 'classification') {
+                modelSelect.innerHTML = `
+                    <option value="random_forest">Random Forest</option>
+                    <option value="linear">Logistic Regression</option>
+                `;
+            } else {
+                modelSelect.innerHTML = `
+                    <option value="random_forest">Random Forest</option>
+                    <option value="linear">Linear Regression</option>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
