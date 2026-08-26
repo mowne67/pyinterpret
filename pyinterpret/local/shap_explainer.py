@@ -116,8 +116,13 @@ class SHAPExplainer(LocalExplainer):
                 if self.background_data is not None:
                     masker = shap.maskers.Independent(self.background_data)
                 else:
-                    # Create a simple Independent masker for linear models
-                    masker = shap.maskers.Independent(np.zeros((1, 1)))  # Placeholder masker
+                    # No background data: use a zero vector sized to the model's
+                    # actual number of input features as the masker background.
+                    n_features = getattr(self.model, 'n_features_in_', None)
+                    if n_features is None:
+                        coef = getattr(self.model, 'coef_', None)
+                        n_features = coef.shape[-1] if coef is not None else 1
+                    masker = shap.maskers.Independent(np.zeros((1, n_features)))
                 
                 self.shap_explainer = shap.LinearExplainer(
                     self.model, 

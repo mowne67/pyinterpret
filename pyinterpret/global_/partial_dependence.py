@@ -10,6 +10,11 @@ import numpy as np
 import pandas as pd
 from itertools import product
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
 from pyinterpret.core.base import GlobalExplainer, ExplanationResult
 from pyinterpret.core.exceptions import ModelError, ValidationError, ExplainerError
 from pyinterpret.utils.validation import validate_data
@@ -113,12 +118,8 @@ class PartialDependenceExplainer(GlobalExplainer):
                 X_array, feature_indices, **kwargs
             )
         
-        # For partial dependence, we don't have feature attributions in the traditional sense
-        # Instead, we store the partial dependence values in metadata and use a dummy attribution array
-        dummy_attributions = np.zeros(len(selected_features))
-        
         return ExplanationResult(
-            attributions=dummy_attributions,
+            attributions=pd_result['values'],
             feature_names=selected_features,
             method='PartialDependence',
             explanation_type='global',
@@ -275,14 +276,12 @@ class PartialDependenceExplainer(GlobalExplainer):
         Returns:
             Matplotlib figure object
         """
-        try:
-            import matplotlib.pyplot as plt
-        except ImportError:
+        if plt is None:
             raise ExplainerError(
                 "Matplotlib is required for plotting. Install with: pip install matplotlib",
                 explainer="PartialDependenceExplainer"
             )
-        
+
         result = self.explain_global(X, features)
         
         if result.metadata['is_2d']:
@@ -292,8 +291,6 @@ class PartialDependenceExplainer(GlobalExplainer):
     
     def _plot_1d_partial_dependence(self, result: ExplanationResult, **plot_kwargs) -> Any:
         """Plot 1D partial dependence."""
-        import matplotlib.pyplot as plt
-        
         fig, ax = plt.subplots(figsize=plot_kwargs.get('figsize', (8, 6)))
         
         grid = result.metadata['grid']
@@ -311,8 +308,6 @@ class PartialDependenceExplainer(GlobalExplainer):
     
     def _plot_2d_partial_dependence(self, result: ExplanationResult, **plot_kwargs) -> Any:
         """Plot 2D partial dependence."""
-        import matplotlib.pyplot as plt
-        
         fig, ax = plt.subplots(figsize=plot_kwargs.get('figsize', (10, 8)))
         
         grid_0, grid_1 = result.metadata['grid']

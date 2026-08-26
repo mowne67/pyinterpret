@@ -116,7 +116,7 @@ class TestBaseExplainer:
     
     def test_initialization_with_invalid_model(self):
         """Test initialization with invalid model."""
-        model = Mock()
+        model = Mock(spec=[])
         # No predict method
         
         with pytest.raises(ModelError):
