@@ -75,9 +75,9 @@ class TestSHAPExplainer:
     
     def test_model_validation_no_predict(self):
         """Test model validation fails without predict method."""
-        model = Mock()
+        model = Mock(spec=[])
         # No predict method
-        
+
         with pytest.raises(ModelError, match="predict"):
             SHAPExplainer(model)
     
@@ -247,16 +247,15 @@ class TestLIMEExplainer:
     
     def test_model_validation_no_predict(self):
         """Test model validation fails without predict method."""
-        model = Mock()
+        model = Mock(spec=[])
         # No predict method
-        
+
         with pytest.raises(ModelError, match="predict"):
             LIMEExplainer(model)
-    
+
     def test_classification_model_validation_no_predict_proba(self):
         """Test classification model validation without predict_proba."""
-        model = Mock()
-        model.predict = Mock()
+        model = Mock(spec=['predict'])
         # No predict_proba method
         
         with pytest.raises(ModelError, match="predict_proba"):

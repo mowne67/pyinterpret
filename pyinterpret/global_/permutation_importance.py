@@ -12,6 +12,11 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error, accuracy_score, log_loss
 from sklearn.model_selection import cross_val_score
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
 from pyinterpret.core.base import GlobalExplainer, ExplanationResult
 from pyinterpret.core.exceptions import ModelError, ValidationError, ExplainerError
 from pyinterpret.utils.validation import validate_data
@@ -283,14 +288,12 @@ class PermutationImportanceExplainer(GlobalExplainer):
         Returns:
             Matplotlib figure object
         """
-        try:
-            import matplotlib.pyplot as plt
-        except ImportError:
+        if plt is None:
             raise ExplainerError(
                 "Matplotlib is required for plotting. Install with: pip install matplotlib",
                 explainer="PermutationImportanceExplainer"
             )
-        
+
         result = self.explain_global(X, y)
         
         # Get top k features

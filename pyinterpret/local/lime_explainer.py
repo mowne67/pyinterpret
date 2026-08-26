@@ -239,8 +239,11 @@ class LIMEExplainer(LocalExplainer):
             if hasattr(explanation, 'intercept'):
                 try:
                     if self.mode == 'classification':
-                        # For classification, intercept might be per class
-                        baseline = explanation.intercept.get(1, explanation.intercept.get(0, None))
+                        # For classification, intercept might be per class (dict) or a list
+                        if isinstance(explanation.intercept, dict):
+                            baseline = explanation.intercept.get(1, explanation.intercept.get(0, None))
+                        else:
+                            baseline = explanation.intercept[0] if len(explanation.intercept) > 0 else None
                     else:
                         # For regression, it's usually a single value
                         baseline = explanation.intercept[0] if isinstance(explanation.intercept, dict) else explanation.intercept

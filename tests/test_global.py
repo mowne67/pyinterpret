@@ -73,9 +73,9 @@ class TestPermutationImportanceExplainer:
     
     def test_model_validation_no_predict(self):
         """Test model validation fails without predict method."""
-        model = Mock()
+        model = Mock(spec=[])
         # No predict method
-        
+
         with pytest.raises(ModelError, match="predict"):
             PermutationImportanceExplainer(model)
     
@@ -292,9 +292,9 @@ class TestPartialDependenceExplainer:
     
     def test_model_validation_no_predict(self):
         """Test model validation fails without predict method."""
-        model = Mock()
+        model = Mock(spec=[])
         # No predict method
-        
+
         with pytest.raises(ModelError, match="predict"):
             PartialDependenceExplainer(model)
     
