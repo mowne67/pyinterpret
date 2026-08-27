@@ -5,7 +5,7 @@ This library provides a consistent API for various model explainability techniqu
 supporting both local and global interpretation methods across different data modalities.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "PyInterpret Team"
 __license__ = "MIT"
 
