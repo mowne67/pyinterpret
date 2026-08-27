@@ -123,6 +123,8 @@ class PartialDependenceExplainer(GlobalExplainer):
             feature_names=selected_features,
             method='PartialDependence',
             explanation_type='global',
+            # attributions is a PD grid/curve, not one value per feature
+            validate_shape=False,
             metadata={
                 'partial_dependence_values': pd_result['values'],
                 'grid': pd_result['grid'],

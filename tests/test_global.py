@@ -200,7 +200,7 @@ class TestPermutationImportanceExplainer:
         
         assert len(ranking['ranking']) == X.shape[1]
     
-    @patch('matplotlib.pyplot')
+    @patch('pyinterpret.global_.permutation_importance.plt')
     def test_plot_importance(self, mock_plt, rf_classifier, classification_data):
         """Test plotting importance."""
         X, y = classification_data
@@ -405,7 +405,7 @@ class TestPartialDependenceExplainer:
         assert len(grid) <= 5  # At most 5 unique values
         assert all(val in [0, 1, 2, 3, 4] for val in grid)
     
-    @patch('matplotlib.pyplot')
+    @patch('pyinterpret.global_.partial_dependence.plt')
     def test_plot_partial_dependence_1d(self, mock_plt, rf_classifier, classification_data):
         """Test plotting 1D partial dependence."""
         X, y = classification_data
@@ -425,7 +425,7 @@ class TestPartialDependenceExplainer:
         mock_ax.set_xlabel.assert_called_once()
         mock_ax.set_ylabel.assert_called_once()
     
-    @patch('matplotlib.pyplot')
+    @patch('pyinterpret.global_.partial_dependence.plt')
     def test_plot_partial_dependence_2d(self, mock_plt, rf_classifier, classification_data):
         """Test plotting 2D partial dependence."""
         X, y = classification_data

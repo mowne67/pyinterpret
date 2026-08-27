@@ -34,10 +34,14 @@ class ExplanationResult:
     # Additional information
     metadata: Dict[str, Any] = field(default_factory=dict)
     explanation_type: str = ""  # 'local' or 'global'
-    
+
+    # Set to False by explainers whose attributions aren't one-value-per-feature
+    # (e.g. partial dependence, where attributions is a grid/curve over feature_names).
+    validate_shape: bool = True
+
     def __post_init__(self):
         """Validate the explanation result after initialization."""
-        if self.attributions is not None and self.feature_names is not None:
+        if self.validate_shape and self.attributions is not None and self.feature_names is not None:
             if hasattr(self.attributions, 'shape'):
                 if len(self.attributions.shape) == 1:
                     expected_length = len(self.attributions)
