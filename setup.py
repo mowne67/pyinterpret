@@ -63,16 +63,15 @@ extras_require['dev'] += extras_require['testing'] + extras_require['docs']
 setup(
     name='pyinterpret',
     version=get_version(),
-    author='PyInterpret Team',
-    author_email='team@pyinterpret.org',
+    author='Mownetharan A K S',
+    author_email='aksmownetharan@gmail.com',
     description='A unified Python library for machine learning model interpretation',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/pyinterpret/pyinterpret',
+    url='https://github.com/mowne67/pyinterpret',
     project_urls={
-        'Documentation': 'https://pyinterpret.readthedocs.io/',
-        'Source': 'https://github.com/pyinterpret/pyinterpret',
-        'Tracker': 'https://github.com/pyinterpret/pyinterpret/issues',
+        'Source': 'https://github.com/mowne67/pyinterpret',
+        'Tracker': 'https://github.com/mowne67/pyinterpret/issues',
     },
     packages=find_packages(),
     classifiers=[

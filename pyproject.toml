@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}
 authors = [
-    {name = "PyInterpret Team", email = "team@pyinterpret.org"}
+    {name = "Mownetharan A K S", email = "aksmownetharan@gmail.com"}
 ]
 keywords = [
     "machine learning",
@@ -76,10 +76,9 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pyinterpret/pyinterpret"
-Documentation = "https://pyinterpret.readthedocs.io/"
-Repository = "https://github.com/pyinterpret/pyinterpret"
-Issues = "https://github.com/pyinterpret/pyinterpret/issues"
+Homepage = "https://github.com/mowne67/pyinterpret"
+Repository = "https://github.com/mowne67/pyinterpret"
+Issues = "https://github.com/mowne67/pyinterpret/issues"
 
 [tool.setuptools.packages.find]
 include = ["pyinterpret*"]

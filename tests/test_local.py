@@ -342,11 +342,12 @@ class TestLIMEExplainer:
         ]
         mock_explanation.intercept = [0.5]
         mock_explanation.score = 0.95
-        
+        mock_explanation.local_pred = [0.8]
+
         mock_lime_explainer = Mock()
         mock_lime_explainer.explain_instance.return_value = mock_explanation
         mock_lime_class.return_value = mock_lime_explainer
-        
+
         explainer = LIMEExplainer(rf_classifier, training_data=X.copy(), mode='classification')
         result = explainer.explain_instance(instance)
         
