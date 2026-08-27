@@ -1,5 +1,6 @@
 # PyInterpret: A Unified Python Library for Machine Learning Model Interpretation
 
+[![PyPI](https://img.shields.io/pypi/v/pyinterpret.svg)](https://pypi.org/project/pyinterpret/)
 [![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
